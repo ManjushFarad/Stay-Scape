@@ -1,0 +1,128 @@
+<% layout('./layouts/boilerplate') -%>
+
+    <body>
+        <!-- <h3 class="mt-3 mb-3">All Listings</h3> -->
+        <!-- <form method="get" action="/listings/new" >
+        <button>Add new Listing</button>
+    </form> -->
+
+    <div class="filters">
+        <div class="filter" data-category="all">
+            <div><i class="fa-solid fa-star"></i></div>
+            <p>All</p>
+        </div>
+
+        <div class="filter" data-category="Trending">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Trending</p>
+        </div>
+
+        <div class="filter" data-category="Rooms">
+            <div><i class="fa-solid fa-bed"></i></div>
+            <p>Rooms</p>
+        </div>
+
+        <div class="filter" data-category="Iconic Cities">
+            <div><i class="fa-solid fa-mountain"></i></div>
+            <p>Iconic Cities</p>
+        </div>
+
+        <div class="filter" data-category="Farms">
+            <div><i class="fa-solid fa-cow"></i></div>
+            <p>Farms</p>
+        </div>
+
+        <div class="filter" data-category="Camping">
+            <div><i class="fa-solid fa-campground"></i></div>
+            <p>Camping</p>
+        </div>
+
+        <div class="filter" data-category="Castles">
+            <div><i class="fa-brands fa-fort-awesome"></i></div>
+            <p>Castles</p>
+        </div>
+
+        <div class="filter" data-category="Arctic">
+            <div><i class="fa-solid fa-snowflake"></i></div>
+            <p>Arctic</p>
+        </div>
+
+        <div class="filter" data-category="Beach Houses">
+            <div><i class="fa-solid fa-umbrella-beach"></i></div>
+            <p>Beach Houses</p>
+        </div>
+
+        <div class="filter" data-category="Villas">
+            <div><i class="fa-solid fa-house-tsunami"></i></div>
+            <p>Villas</p>
+        </div>
+
+        <div class="filter" data-category="Cottages">
+            <div><i class="fa-solid fa-house-chimney"></i></div>
+            <p>Cottages</p>
+        </div>
+
+        <div class="filter" data-category="Luxury">
+            <div><i class="fa-solid fa-crown"></i></div>
+            <p>Luxury</p>
+        </div>
+
+        <div class="tax-toggle ms-auto">
+            <div>
+                <div class="form-check-reverse form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                <label class="form-check-label" for="switchCheckDefault">Display total after taxes </label>
+</div>
+            </div>
+        </div>
+    </div>
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+            <% for(listing of allListings){ %>
+                <a href="/listings/<%= listing._id %>" class="listing-link">
+                    <div class="card col">
+                        <div class="card-img-overlay"></div>
+                        <img src="<%= listing.image.url %>" class="card-img-top" alt="Listing Image" style="height: 20rem;">
+                        <div class="card-body">
+                            <p class="card-text"><b>
+                                    <%= listing.title %>
+                            </b>
+                            <p>&#8377;<%= listing.price.toLocaleString("en-IN") %> /night
+                                <br>
+                            <i class="tax-switch">+18% GST</i>
+                            </p>
+                            
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            <% } %>
+        </div>
+
+    <script>
+        document.querySelectorAll('.filter').forEach(filter => {
+            filter.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                if (category === 'all') {
+                    window.location.href = '/listings';
+                } else {
+                    window.location.href = `/listings?category=${encodeURIComponent(category)}`;
+                }
+            });
+        });
+    </script>
+
+    <script>
+        let toggle = document.querySelector('.tax-toggle input');
+        toggle.addEventListener('click', ()=>{
+            let taxInfo = document.querySelectorAll('.tax-switch');
+            for(info of taxInfo){
+                if(info.style.display === "inline"){
+                    info.style.display = "none";
+                } else{
+                info.style.display = "inline";
+                }
+            }
+        })
+    </script>
+
+    </body>
