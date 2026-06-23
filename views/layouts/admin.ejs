@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Stay Scape</title>
+    <link rel="icon" type="image/png" href="/images/favicon4.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap" rel="stylesheet">
+    <style>
+        .admin-sidebar {
+            background: linear-gradient(180deg, #111111 0%, #222222 100%);
+            color: white;
+            padding-top: 2rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+        .admin-sidebar h4 {
+            font-weight: 800;
+            letter-spacing: 1px;
+            font-size: 1.4rem;
+        }
+        .admin-sidebar a {
+            color: #888888;
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: 0.4rem 1rem;
+            border-radius: 12px;
+        }
+        .admin-sidebar a i {
+            width: 30px;
+            font-size: 1.1rem;
+        }
+        .admin-sidebar a:hover, .admin-sidebar a.active {
+            background: linear-gradient(135deg, #fe424d 0%, #ff6b73 100%);
+            color: white;
+            transform: translateX(6px);
+            box-shadow: 0 6px 15px rgba(254, 66, 77, 0.35);
+        }
+        .mt-auto-link {
+            margin-top: auto !important;
+            margin-bottom: 2rem !important;
+            border-top: 1px solid #333;
+            border-radius: 0 !important;
+            padding-top: 1.5rem !important;
+        }
+        .mt-auto-link:hover {
+            background: transparent !important;
+            color: #fe424d !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+        .admin-main {
+            padding: 2.5rem 3.5rem;
+            background-color: #f7f9fc;
+        }
+        .admin-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .admin-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+        }
+        .admin-icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 1rem auto;
+        }
+        .bg-light-primary { background: rgba(13, 110, 253, 0.1); color: #0d6efd; }
+        .bg-light-success { background: rgba(25, 135, 84, 0.1); color: #198754; }
+        .bg-light-warning { background: rgba(255, 193, 7, 0.15); color: #f59f00; }
+        .bg-light-danger { background: rgba(254, 66, 77, 0.1); color: #fe424d; }
+        
+        .admin-table-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+        .table > :not(caption) > * > * {
+            padding: 1.2rem 1rem;
+            border-bottom-color: #f1f3f5;
+            vertical-align: middle;
+        }
+        .table-hover tbody tr {
+            transition: all 0.2s ease;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.002);
+        }
+        .badge-soft-success { background-color: #d1e7dd; color: #0f5132; }
+        .badge-soft-warning { background-color: #fff3cd; color: #856404; }
+        .badge-soft-danger { background-color: #f8d7da; color: #842029; }
+        .badge-soft-secondary { background-color: #e2e3e5; color: #41464b; }
+        .fs-7 { font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Sidebar -->
+            <div class="col-md-2 admin-sidebar d-flex flex-column">
+                <h4 class="text-center mb-5 mt-2"><i class="fa-solid fa-compass text-danger me-2"></i>StayScape</h4>
+                <a href="/admin" class="active"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+                <a href="/admin/users"><i class="fa-solid fa-users"></i> Users</a>
+                <a href="/admin/listings"><i class="fa-solid fa-house-chimney"></i> Listings</a>
+                <a href="/admin/reviews"><i class="fa-solid fa-star"></i> Reviews</a>
+                <a href="/admin/bookings"><i class="fa-solid fa-calendar-check"></i> Bookings</a>
+                <a href="/listings" class="mt-auto-link"><i class="fa-solid fa-arrow-left-long"></i> Back to App</a>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-md-10 admin-main min-vh-100">
+                <%- include('../includes/flash.ejs') %>
+                <%- body -%>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Simple script to highlight active sidebar link
+        document.addEventListener('DOMContentLoaded', () => {
+            const path = window.location.pathname;
+            document.querySelectorAll('.admin-sidebar a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === path) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

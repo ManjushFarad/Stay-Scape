@@ -220,3 +220,16 @@ label {
 padding: 0.5rem 1.5rem 0.5rem 1.5rem;
 font-size: 0.9rem;
 }
+
+/* Wishlist styles */
+.wishlist-heart {
+    transition: transform 0.2s ease-in-out;
+}
+
+.text-white.wishlist-heart {
+    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.5));
+}
+
+.wishlist-heart:hover {
+    transform: scale(1.2);
+}

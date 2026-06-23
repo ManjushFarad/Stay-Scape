@@ -1,0 +1,59 @@
+<% layout('./layouts/admin') -%>
+
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <h2 class="fw-bold mb-1">Dashboard Overview</h2>
+        <p class="text-muted">Welcome to the StayScape Admin Control Panel.</p>
+    </div>
+    <div class="d-flex gap-3">
+        <span class="text-muted fw-semibold"><i class="fa-regular fa-clock me-1"></i> <%= new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) %></span>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-4 g-4 mb-5">
+    <div class="col">
+        <div class="admin-card p-4 text-center">
+            <div class="admin-icon-box bg-light-primary">
+                <i class="fa-solid fa-users"></i>
+            </div>
+            <h5 class="text-muted fw-semibold mb-1">Total Users</h5>
+            <h2 class="fw-bolder mb-0"><%= totalUsers %></h2>
+        </div>
+    </div>
+    <div class="col">
+        <div class="admin-card p-4 text-center">
+            <div class="admin-icon-box bg-light-success">
+                <i class="fa-solid fa-house-chimney"></i>
+            </div>
+            <h5 class="text-muted fw-semibold mb-1">Total Listings</h5>
+            <h2 class="fw-bolder mb-0"><%= totalListings %></h2>
+        </div>
+    </div>
+    <div class="col">
+        <div class="admin-card p-4 text-center">
+            <div class="admin-icon-box bg-light-warning">
+                <i class="fa-solid fa-star text-warning"></i>
+            </div>
+            <h5 class="text-muted fw-semibold mb-1">Total Reviews</h5>
+            <h2 class="fw-bolder mb-0"><%= totalReviews %></h2>
+        </div>
+    </div>
+    <div class="col">
+        <div class="admin-card p-4 text-center">
+            <div class="admin-icon-box bg-light-danger">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <h5 class="text-muted fw-semibold mb-1">Total Bookings</h5>
+            <h2 class="fw-bolder mb-0"><%= totalBookings %></h2>
+        </div>
+    </div>
+</div>
+
+<div class="admin-table-container">
+    <h4 class="fw-bold mb-4">Quick Actions</h4>
+    <div class="d-flex gap-3">
+        <a href="/admin/users" class="btn btn-outline-dark rounded-pill px-4 py-2"><i class="fa-solid fa-users me-2"></i> Manage Users</a>
+        <a href="/admin/listings" class="btn btn-outline-dark rounded-pill px-4 py-2"><i class="fa-solid fa-house me-2"></i> Manage Listings</a>
+        <a href="/admin/bookings" class="btn btn-outline-dark rounded-pill px-4 py-2"><i class="fa-solid fa-calendar-check me-2"></i> Manage Bookings</a>
+    </div>
+</div>

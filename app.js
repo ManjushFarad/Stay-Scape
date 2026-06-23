@@ -29,6 +29,9 @@ async function main() {
 const listingsRouter = require("./routes/listings.js");
 const reviewsRouter = require("./routes/reviews.js");
 const usersRouter = require("./routes/user.js");
+const wishlistRouter = require("./routes/wishlist.js");
+const bookingRouter = require("./routes/booking.js");
+const adminRouter = require("./routes/admin.js");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -97,6 +100,9 @@ app.use((req, res, next) => {
 app.use("/listings", listingsRouter);
 app.use("/listings/:id/reviews", reviewsRouter);
 app.use("/", usersRouter);
+app.use("/wishlist", wishlistRouter);
+app.use("/admin", adminRouter);
+app.use("/", bookingRouter);
 
 // 404 handler
 app.use((req, res, next) => {

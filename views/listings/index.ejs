@@ -81,6 +81,13 @@
                 <a href="/listings/<%= listing._id %>" class="listing-link">
                     <div class="card col">
                         <div class="card-img-overlay"></div>
+                        <span class="wishlist-toggle position-absolute top-0 end-0 m-3 z-3" data-id="<%= listing._id %>">
+                            <% if(currentUser && currentUser.wishlist && currentUser.wishlist.includes(listing._id)) { %>
+                                <i class="fa-solid fa-heart text-danger fs-3 wishlist-heart"></i>
+                            <% } else { %>
+                                <i class="fa-regular fa-heart text-white fs-3 wishlist-heart"></i>
+                            <% } %>
+                        </span>
                         <img src="<%= listing.image.url %>" class="card-img-top" alt="Listing Image" style="height: 20rem;">
                         <div class="card-body">
                             <p class="card-text"><b>
