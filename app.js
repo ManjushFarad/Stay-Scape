@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 // console.log(process.env.SECRET);
@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
-    crypto:{
+    crypto: {
         secret: process.env.SECRET
     },
     touchAfter: 24 * 3600
@@ -92,12 +92,14 @@ app.use((req, res, next) => {
 //     res.send(registeredUser);
 // })
 
+
 // Routes
-// app.get("/", (req, res) => {
-//     res.send("Working Fine");
-// });
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
 
 app.use("/listings", listingsRouter);
+
 app.use("/listings/:id/reviews", reviewsRouter);
 app.use("/", usersRouter);
 app.use("/wishlist", wishlistRouter);
