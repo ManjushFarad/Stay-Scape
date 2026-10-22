@@ -1,4 +1,5 @@
 const Listing = require("../models/listings.js");
+const Booking = require("../models/booking.js");
 
 module.exports.index = async (req, res) => {
     const { category, search } = req.query;
@@ -22,12 +23,18 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createListing = async (req, res) => {
-    let imageUrl = req.file.path;
-    let fileName = req.file.filename;
+    if (!req.user || !req.user._id) {
+        req.flash("error", "You must be logged in to create a listing.");
+        return res.redirect("/login");
+    }
     const listing = new Listing(req.body.listing);
     listing.owner = req.user._id;
-    listing.image.url = imageUrl;
-    listing.image.filename = fileName;
+    if (req.file) {
+        listing.image = {
+            url: req.file.path,
+            filename: req.file.filename
+        };
+    }
     await listing.save();
     req.flash("success", "New Listing Created");
     res.redirect('/listings');
@@ -51,16 +58,17 @@ module.exports.renderEditForm = async (req, res) => {
         req.flash("error", "Listing you trying to edit does not exists");
         res.redirect("/listings");
     } else {
-        let originalImageUrl = listing.image.url;
-        originalImageUrl = originalImageUrl.replace("/upload", "/upload/h_300,w_300/");
-        // console.log(originalImageUrl);
+        let originalImageUrl = (listing.image && listing.image.url) ? listing.image.url : "";
+        if (originalImageUrl) {
+            originalImageUrl = originalImageUrl.replace("/upload", "/upload/h_300,w_300/");
+        }
         res.render("./listings/edit.ejs", { listing, originalImageUrl });
     }
 };
 
 module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
-    let listing =await Listing.findByIdAndUpdate(id, req.body.listing);
+    let listing = await Listing.findByIdAndUpdate(id, req.body.listing);
     if (typeof req.file !== "undefined") {
         let imageUrl = req.file.path;
         let fileName = req.file.filename;
@@ -74,6 +82,7 @@ module.exports.updateListing = async (req, res) => {
 
 module.exports.destroyListing = async (req, res) => {
     let { id } = req.params;
+    await Booking.deleteMany({ listing: id });
     await Listing.findByIdAndDelete(id);
     req.flash("success", "Listing Deleted");
     res.redirect("/listings");

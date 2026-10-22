@@ -11,7 +11,13 @@ module.exports.createBooking = async (req, res) => {
         return res.redirect("/listings");
     }
 
-    if (listing.owner.equals(req.user._id)) {
+    if (!listing.owner) {
+        req.flash("error", "This listing currently has no active host and cannot accept bookings");
+        return res.redirect(`/listings/${id}`);
+    }
+
+    const hostId = listing.owner._id ? listing.owner._id : listing.owner;
+    if (hostId.equals(req.user._id)) {
         req.flash("error", "You cannot book your own listing");
         return res.redirect(`/listings/${id}`);
     }
@@ -50,7 +56,7 @@ module.exports.createBooking = async (req, res) => {
     const booking = new Booking({
         listing: id,
         guest: req.user._id,
-        host: listing.owner,
+        host: hostId,
         checkInDate: checkIn,
         checkOutDate: checkOut,
         totalGuests
@@ -75,7 +81,7 @@ module.exports.cancelBooking = async (req, res) => {
         return res.redirect("/my-bookings");
     }
 
-    if (!booking.guest.equals(req.user._id)) {
+    if (!booking.guest || !booking.guest.equals(req.user._id)) {
         req.flash("error", "You do not have permission to cancel this booking");
         return res.redirect("/my-bookings");
     }
@@ -99,7 +105,7 @@ module.exports.updateStatus = async (req, res) => {
         return res.redirect("/host/bookings");
     }
 
-    if (!booking.host.equals(req.user._id)) {
+    if (!booking.host || !booking.host.equals(req.user._id)) {
         req.flash("error", "You do not have permission to do that");
         return res.redirect("/host/bookings");
     }

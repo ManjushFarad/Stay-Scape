@@ -24,7 +24,8 @@ const initDB = async ()=>{
         // Create a new user
         const newUser = new User({
             email: "admin@wanderlust.com",
-            username: "admin"
+            username: "admin",
+            role: "admin"
         });
         const registeredUser = await User.register(newUser, "password123");
         console.log("Admin user created:", registeredUser);

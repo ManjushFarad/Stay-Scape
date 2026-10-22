@@ -18,8 +18,8 @@
                 <tbody>
                     <% for(booking of bookings) { %>
                         <tr>
-                            <td><a href="/listings/<%= booking.listing._id %>" class="text-decoration-none text-dark fw-bold"><%= booking.listing.title %></a></td>
-                            <td>@<%= booking.guest.username %></td>
+                            <td><a href="/listings/<%= booking.listing ? booking.listing._id : '#' %>" class="text-decoration-none text-dark fw-bold"><%= booking.listing ? booking.listing.title : 'Deleted Listing' %></a></td>
+                            <td>@<%= (booking.guest && booking.guest.username) ? booking.guest.username : 'Unknown' %></td>
                             <td>
                                 <%= booking.checkInDate.toLocaleDateString('en-GB') %> to <br>
                                 <%= booking.checkOutDate.toLocaleDateString('en-GB') %>

@@ -19,7 +19,7 @@
                 <% for(review of reviews) { %>
                     <tr>
                         <td>
-                            <span class="badge badge-soft-secondary px-3 py-2 rounded-pill">@<%= review.author.username %></span>
+                            <span class="badge badge-soft-secondary px-3 py-2 rounded-pill"><%= (review.author && review.author.username) ? '@' + review.author.username : 'Unknown author' %></span>
                         </td>
                         <td>
                             <div class="bg-light-warning d-inline-block px-3 py-1 rounded-pill fw-bold shadow-sm">

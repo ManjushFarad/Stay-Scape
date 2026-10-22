@@ -19,18 +19,22 @@
         <div class="row mb-4">
             <div class="col-6 offset-2">
                 <div class="card border-0">
-                    <img src="<%= listing.image.url %>" class="card-img-top show-img mt-3" alt="listing-Image">
+                    <img src="<%= listing.image && listing.image.url ? listing.image.url : '' %>" class="card-img-top show-img mt-3" alt="listing-Image">
                     <div class="card-body mt-3 px-0">
                         <p class="card-text">
-                            Owner: <b><%= listing.owner.username %></b> <br>
+                            Owner: <b><%= (listing.owner && listing.owner.username) ? listing.owner.username : "Unknown owner" %></b> <br>
                             <%= listing.description %> <br>
-                            &#8377;<%= listing.price.toLocaleString("en-IN") %> <br>
+                            &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : '0' %> <br>
                             <%= listing.location %> <br>
                             <%= listing.country %>
                         </p>
                     </div>
                 </div>
-                <% if(currentUser && currentUser._id.equals(listing.owner._id)) { %>
+                <% 
+                    const isListingOwner = currentUser && listing.owner && currentUser._id.equals(listing.owner._id || listing.owner);
+                    const isSiteAdmin = currentUser && currentUser.role === 'admin';
+                %>
+                <% if(isListingOwner || isSiteAdmin) { %>
                 <div class="btns mb-3">
                     <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark add-btn col-2 me-3">Edit</a>
                     <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
@@ -41,7 +45,12 @@
             </div>
             <div class="col-4">
                 <!-- Booking Form -->
-                <% if(currentUser && !currentUser._id.equals(listing.owner._id)) { %>
+                <% if(!listing.owner) { %>
+                <div class="card p-4 shadow-sm border mt-3 rounded-4 text-center bg-light">
+                    <h4>Booking Unavailable</h4>
+                    <p class="text-muted mt-2">This listing is currently unavailable for bookings because the host cannot be verified.</p>
+                </div>
+                <% } else if(currentUser && !currentUser._id.equals(listing.owner._id || listing.owner)) { %>
                 <div class="card p-4 shadow-sm border mt-3 rounded-4">
                     <h4 class="mb-3">Request a Booking</h4>
                     <form action="/listings/<%= listing._id %>/book" method="POST">
@@ -127,20 +136,24 @@
             </form>
             <% } %>
 
-            <% if(listing.reviews.length> 0) { %>
+            <% if(listing.reviews && listing.reviews.length > 0) { %>
                 <hr>
                 <div class="row">
                     <p><b>All Reviews</b></p>
                     <% for(review of listing.reviews) { %>
+                        <% if(!review) continue; %>
                         <div class="card col-5 ms-3 mb-3 border border-dark border-1 shadow-sm review-card">
                             <div class="card-body">
-                                <h5 class="card-title">@<%= review.author.username %></h5>
+                                <h5 class="card-title">@<%= (review.author && review.author.username) ? review.author.username : 'Unknown' %></h5>
                                 <p class="card-text">
                                     <%= review.comment %>
                                 </p>
                                 <p class="starability-result card" data-rating="<%= review.rating %>">
                                  </p>
-                                <% if(currentUser && currentUser._id.equals(review.author._id)) { %>
+                                <% 
+                                    const isReviewAuthor = currentUser && review.author && currentUser._id.equals(review.author._id || review.author);
+                                    if(isReviewAuthor || isSiteAdmin) { 
+                                %>
                                 <form class="mb-3" method="POST"
                                     action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
                                     <button class="btn btn-sm btn-dark" style="border-radius: 15px;">Delete</button>

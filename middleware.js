@@ -19,15 +19,23 @@ module.exports.saveRedirectURL = (req, res, next) => {
     next()
 };
 
-module.exports.isOwner = async (req,res,next) =>{
+module.exports.isOwner = async (req, res, next) => {
     let { id } = req.params; 
     const listing = await Listing.findById(id);
-    if(!listing.owner._id.equals(res.locals.currentUser._id)){
+    if (!listing) {
+        req.flash("error", "Listing you are trying to access does not exist");
+        return res.redirect("/listings");
+    }
+    if (res.locals.currentUser && res.locals.currentUser.role === 'admin') {
+        return next();
+    }
+    const ownerId = listing.owner && listing.owner._id ? listing.owner._id : listing.owner;
+    if (!ownerId || !res.locals.currentUser || !ownerId.equals(res.locals.currentUser._id)) {
         req.flash("error", "You don't have permission as you are not the owner of this listing");
         return res.redirect(`/listings/${id}`);
     } 
     next();
-}
+};
 
 module.exports.validateListing = (req, res, next) => {
     let { error } = listingSchema.validate(req.body);
@@ -50,15 +58,23 @@ module.exports.validateReview = (req, res, next) => {
     }
 };
 
-module.exports.isReviewAuthor = async (req,res,next) =>{
+module.exports.isReviewAuthor = async (req, res, next) => {
     let { id, reviewId } = req.params;
     const review = await Review.findById(reviewId);
-    if(!review.author._id.equals(res.locals.currentUser._id)){
+    if (!review) {
+        req.flash("error", "Review does not exist");
+        return res.redirect(`/listings/${id}`);
+    }
+    if (res.locals.currentUser && res.locals.currentUser.role === 'admin') {
+        return next();
+    }
+    const authorId = review.author && review.author._id ? review.author._id : review.author;
+    if (!authorId || !res.locals.currentUser || !authorId.equals(res.locals.currentUser._id)) {
         req.flash("error", "You don't have permission as you are not the author of this review");
         return res.redirect(`/listings/${id}`);
     } 
     next();
-}
+};
 
 module.exports.isAdmin = (req, res, next) => {
     if (req.user && req.user.role === 'admin') {

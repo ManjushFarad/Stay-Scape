@@ -25,7 +25,7 @@
                             </div>
                         </td>
                         <td>
-                            <span class="badge badge-soft-secondary px-3 py-2 rounded-pill">@<%= listing.owner.username %></span>
+                            <span class="badge badge-soft-secondary px-3 py-2 rounded-pill"><%= (listing.owner && listing.owner.username) ? '@' + listing.owner.username : 'Unknown owner' %></span>
                         </td>
                         <td class="text-muted"><i class="fa-solid fa-location-dot me-1 text-danger"></i> <%= listing.location %>, <%= listing.country %></td>
                         <td class="text-end">
