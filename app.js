@@ -94,6 +94,8 @@ app.use((req, res, next) => {
 
 
 // Routes
+
+//home page
 app.get("/", (req, res) => {
     res.redirect("/listings");
 });
